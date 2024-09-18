@@ -1,0 +1,39 @@
+.cats-container {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr); /* 3 columns in the first row */
+    grid-template-rows: auto auto; /* 2 rows */
+    gap: 16px;
+}
+
+/* .cats-container {
+  display: flex;
+  flex-wrap: wrap;
+} */
+
+.spinner {
+  width: 300px;
+  height: 300px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #f0f0f0;
+  font-size: 1.5em;
+  color: #888;
+}
+
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.8);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.overlay img {
+  max-width: 90%;
+  max-height: 90%;
+}
