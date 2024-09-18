@@ -21,7 +21,7 @@ const DraggableCard = ({ cat, index, moveCard, onClick }) => {
         moveCard(item.index, index);
         item.index = index;
       }
-    }, 
+    },  
   });
 
   return (
