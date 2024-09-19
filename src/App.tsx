@@ -69,17 +69,6 @@ function App() {
     };
   }, []);
 
-  const addNewCat = (newCat) => {
-    fetch('/api/cats', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(newCat),
-    })
-      .then(response => response.json())
-      .then(data => setCards(prevCards => [...prevCards, data]));
-  };
 
   return (
     <DndProvider backend={HTML5Backend}>
@@ -100,9 +89,6 @@ function App() {
           <img src={overlayImage} alt="Overlay" />
         </div>
       )}
-      <button onClick={() => addNewCat({ title: 'New Cat', image: 'https://example.com/newcat.jpg' })}>
-        Add New Cat
-      </button>
     </DndProvider>
   );
 }
