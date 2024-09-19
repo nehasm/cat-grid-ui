@@ -75,7 +75,7 @@ function App() {
           <img src={overlayImage} alt="Overlay" />
         </div>
       )}
-      {saving && <div className="spinner">Saving...</div>}
+      {saving && <div className='spinner'></div>}
       <div>Last saved: {timeSinceLastSave} seconds ago</div>
     </DndProvider>
   );

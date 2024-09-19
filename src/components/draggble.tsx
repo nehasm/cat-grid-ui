@@ -26,7 +26,7 @@ const DraggableCard = ({ cat, index, moveCard, onClick, onPositionChange }) => {
   return (
     <div ref={(node) => ref(drop(node))} onClick={() => onClick(cat.image)}>
       <div>{cat.title}</div>
-      {loading && <div className="spinner">Loading...</div>}
+      {loading && <div className="loading-card"><div className='spinner'></div></div>}
       <img
         src={cat.image}
         alt={cat.title}
