@@ -48,5 +48,3 @@ This project implements a simple front-end application using React, TypeScript, 
 ## Conclusion
 
 This project demonstrates a robust implementation of a React-based front-end application with advanced features like drag-and-drop, image overlays, and data persistence. By leveraging TypeScript and Vite, the development process is streamlined and efficient. The use of MSW for mocking API requests ensures that the application can be developed and tested in isolation. Overall, this project serves as a solid foundation for building interactive and dynamic web applications.
-
-##Conclusion
