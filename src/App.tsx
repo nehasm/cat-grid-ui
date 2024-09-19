@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react';
 import { DndProvider, useDrag, useDrop } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
 import './App.css';
-import catsData from './constants/cats.json';
 
 const ItemType = 'CARD';
 
@@ -21,7 +20,7 @@ const DraggableCard = ({ cat, index, moveCard, onClick }) => {
         moveCard(item.index, index);
         item.index = index;
       }
-    },  
+    },
   });
 
   return (
@@ -45,7 +44,9 @@ function App() {
   const [overlayImage, setOverlayImage] = useState(null);
 
   useEffect(() => {
-    setCards(catsData);
+    fetch('/cats')
+      .then(response => response.json())
+      .then(data => setCards(data));
   }, []);
 
   const moveCard = (fromIndex, toIndex) => {
@@ -68,6 +69,18 @@ function App() {
     };
   }, []);
 
+  const addNewCat = (newCat) => {
+    fetch('/api/cats', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(newCat),
+    })
+      .then(response => response.json())
+      .then(data => setCards(prevCards => [...prevCards, data]));
+  };
+
   return (
     <DndProvider backend={HTML5Backend}>
       <div>Cat Portfolio</div>
@@ -87,6 +100,9 @@ function App() {
           <img src={overlayImage} alt="Overlay" />
         </div>
       )}
+      <button onClick={() => addNewCat({ title: 'New Cat', image: 'https://example.com/newcat.jpg' })}>
+        Add New Cat
+      </button>
     </DndProvider>
   );
 }
