@@ -11,6 +11,7 @@ function App() {
   const [saving, setSaving] = useState(false);
   const [lastSaveTime, setLastSaveTime] = useState(Date.now());
   const [timeSinceLastSave, setTimeSinceLastSave] = useState(0);
+  const [initialSave, setInitialSave] = useState(false);
 
   useEffect(() => {
     fetch('/cats')
@@ -42,6 +43,7 @@ function App() {
           setTimeSinceLastSave(0);
           setSaving(false);
           setUnsavedChanges(false);
+          setInitialSave(true);
         })
         .catch(error => {
           console.error('Save error:', error);
@@ -56,15 +58,37 @@ function App() {
   }, [saveChanges]);
 
   useEffect(() => {
-    const timeInterval = setInterval(() => {
-      setTimeSinceLastSave(Math.floor((Date.now() - lastSaveTime) / 1000));
-    }, 1000);
-    return () => clearInterval(timeInterval);
-  }, [lastSaveTime]);
+    if (initialSave) {
+      const timeInterval = setInterval(() => {
+        setTimeSinceLastSave(Math.floor((Date.now() - lastSaveTime) / 1000));
+      }, 1000);
+      return () => clearInterval(timeInterval);
+    }
+  }, [initialSave, lastSaveTime]);
+
+  const handleKeyDown = (event) => {
+    if (event.key === 'Escape') {
+      setOverlayImage(null);
+    }
+  };
+
+  useEffect(() => {
+    document.addEventListener('keydown', handleKeyDown);
+    return () => {
+      document.removeEventListener('keydown', handleKeyDown);
+    };
+  }, []);
 
   return (
     <DndProvider backend={HTML5Backend}>
-      <div><span className='cats-title'>Cat Portfolio</span> {saving ? <span className='spinner'></span> : <span >Last saved: {timeSinceLastSave} seconds ago</span>}</div>
+      <div>
+        <span className='cats-title'>Cat Portfolio</span>
+        {saving ? (
+          <span className='spinner'></span>
+        ) : (
+          initialSave && <span className='time-stamp'>Last saved: {timeSinceLastSave} seconds ago</span>
+        )}
+      </div>
       <div className="cats-container">
         {cards.map((cat, index) => (
           <DraggableCard
