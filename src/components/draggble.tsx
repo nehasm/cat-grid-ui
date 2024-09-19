@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
 import { useDrag, useDrop } from 'react-dnd';
-import '../App.css'
+import '../App.css';
 
 const ItemType = 'CARD';
 
-const DraggableCard = ({ cat, index, moveCard, onClick }) => {
+const DraggableCard = ({ cat, index, moveCard, onClick, onPositionChange }) => {
   const [loading, setLoading] = useState(true);
 
   const [, ref] = useDrag({
@@ -18,6 +18,7 @@ const DraggableCard = ({ cat, index, moveCard, onClick }) => {
       if (item.index !== index) {
         moveCard(item.index, index);
         item.index = index;
+        onPositionChange();
       }
     },
   });
