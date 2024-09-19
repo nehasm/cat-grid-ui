@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useCallback } from 'react';
+import { useEffect, useState, useCallback } from 'react';
 import { DndProvider } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
 import DraggableCard from './components/draggble';
@@ -19,7 +19,7 @@ function App() {
       .then(data => setCards(data));
   }, []);
 
-  const moveCard = (fromIndex, toIndex) => {
+  const moveCard = (fromIndex : any, toIndex : any) => {
     const updatedCards = [...cards];
     const [movedCard] = updatedCards.splice(fromIndex, 1);
     updatedCards.splice(toIndex, 0, movedCard);
@@ -66,7 +66,7 @@ function App() {
     }
   }, [initialSave, lastSaveTime]);
 
-  const handleKeyDown = (event) => {
+  const handleKeyDown = (event : any) => {
     if (event.key === 'Escape') {
       setOverlayImage(null);
     }
