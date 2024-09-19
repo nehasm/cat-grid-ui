@@ -7,7 +7,7 @@ import './App.css';
 function App() {
   const [cards, setCards] = useState([]);
   const [unsavedChanges, setUnsavedChanges] = useState(false);
-  const [overlayImage, setOverlayImage] = useState(null);
+  const [overlayImage, setOverlayImage] = useState<string | null>(null);
   const [saving, setSaving] = useState(false);
   const [lastSaveTime, setLastSaveTime] = useState(Date.now());
   const [timeSinceLastSave, setTimeSinceLastSave] = useState(0);
@@ -19,7 +19,7 @@ function App() {
       .then(data => setCards(data));
   }, []);
 
-  const moveCard = (fromIndex : any, toIndex : any) => {
+  const moveCard = (fromIndex : number, toIndex : number) => {
     const updatedCards = [...cards];
     const [movedCard] = updatedCards.splice(fromIndex, 1);
     updatedCards.splice(toIndex, 0, movedCard);
@@ -96,7 +96,7 @@ function App() {
             index={index}
             cat={cat}
             moveCard={moveCard}
-            onClick={setOverlayImage}
+            overlay={setOverlayImage}
             onPositionChange={() => setUnsavedChanges(true)}
           />
         ))}

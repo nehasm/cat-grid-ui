@@ -13,11 +13,11 @@ interface DraggableCardProps {
   };
   index: number;
   moveCard: (fromIndex: number, toIndex: number) => void;
-  onClick: (image: string) => void;
+  overlay: (image: string) => void;
   onPositionChange: () => void;
 }
 
-const DraggableCard: React.FC<DraggableCardProps> = ({ cat, index, moveCard, onClick, onPositionChange }) => {
+const DraggableCard = ({ cat, index, moveCard, overlay, onPositionChange }: DraggableCardProps) => {
   const [loading, setLoading] = useState(true);
 
   const [, ref] = useDrag({
@@ -37,7 +37,7 @@ const DraggableCard: React.FC<DraggableCardProps> = ({ cat, index, moveCard, onC
   });
 
   return (
-    <div ref={(node) => ref(drop(node))} onClick={() => onClick(cat.image)}>
+    <div ref={(node) => ref(drop(node))} onClick={() => overlay(cat.image)}>
       <div>{cat.title}</div>
       {loading && <div className="spinner"></div>}
       <img
