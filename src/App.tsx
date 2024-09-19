@@ -10,6 +10,7 @@ function App() {
   const [overlayImage, setOverlayImage] = useState(null);
   const [saving, setSaving] = useState(false);
   const [lastSaveTime, setLastSaveTime] = useState(Date.now());
+  const [timeSinceLastSave, setTimeSinceLastSave] = useState(0);
 
   useEffect(() => {
     fetch('/cats')
@@ -22,12 +23,12 @@ function App() {
     const [movedCard] = updatedCards.splice(fromIndex, 1);
     updatedCards.splice(toIndex, 0, movedCard);
     setCards(updatedCards);
+    setSaving(true);
     setUnsavedChanges(true);
   };
 
   const saveChanges = useCallback(() => {
     if (unsavedChanges) {
-      setSaving(true);
       fetch('/cats', {
         method: 'POST',
         headers: {
@@ -37,9 +38,10 @@ function App() {
       })
         .then(response => response.json())
         .then(() => {
+          setLastSaveTime(Date.now());
+          setTimeSinceLastSave(0);
           setSaving(false);
           setUnsavedChanges(false);
-          setLastSaveTime(Date.now());
         })
         .catch(error => {
           console.error('Save error:', error);
@@ -53,11 +55,16 @@ function App() {
     return () => clearInterval(interval);
   }, [saveChanges]);
 
-  const timeSinceLastSave = Math.floor((Date.now() - lastSaveTime) / 1000);
+  useEffect(() => {
+    const timeInterval = setInterval(() => {
+      setTimeSinceLastSave(Math.floor((Date.now() - lastSaveTime) / 1000));
+    }, 1000);
+    return () => clearInterval(timeInterval);
+  }, [lastSaveTime]);
 
   return (
     <DndProvider backend={HTML5Backend}>
-      <div>Cat Portfolio</div>
+      <div><span className='cats-title'>Cat Portfolio</span> {saving ? <span className='spinner'></span> : <span >Last saved: {timeSinceLastSave} seconds ago</span>}</div>
       <div className="cats-container">
         {cards.map((cat, index) => (
           <DraggableCard
@@ -75,8 +82,8 @@ function App() {
           <img src={overlayImage} alt="Overlay" />
         </div>
       )}
-      {saving && <div className='spinner'></div>}
-      <div>Last saved: {timeSinceLastSave} seconds ago</div>
+
+
     </DndProvider>
   );
 }
